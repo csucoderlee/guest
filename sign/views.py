@@ -13,11 +13,13 @@ def login_action(request):
         if username == 'admin' and password == 'admin123':
             # return HttpResponse('login success')
             response = HttpResponseRedirect('/event_manage/')
-            response.set_cookie('user', username, 3600)
+            # response.set_cookie('user', username, 3600)
+            request.session['user'] = username
             return response
         else:
             return render(request, 'index.html', {'error':'username or password is wrong'})
 
 def event_manage(request):
-    username = request.COOKIES.get('user','')
+    # username = request.COOKIES.get('user','')
+    username = request.session.get('user', '')
     return render(request, "event_manage.html", {'user':username})
